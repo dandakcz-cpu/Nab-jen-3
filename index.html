@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opel – nabíjení do 80 %</title>
+  <meta name="theme-color" content="#0ea5e9">
+  <style>
+    :root{
+      --bg1:#0ea5e9;
+      --bg2:#22c55e;
+      --ink:#0b1220;
+      --muted:#64748b;
+      --card:#ffffff;
+      --ring: rgba(14,165,233,.25);
+      --shadow: 0 18px 50px rgba(2,6,23,.18);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 20% 0%, rgba(34,197,94,.25), transparent 55%),
+        radial-gradient(900px 600px at 80% 10%, rgba(14,165,233,.25), transparent 55%),
+        linear-gradient(180deg, #f8fafc, #eef2ff);
+      min-height:100vh;
+      padding:22px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    .app{
+      width:min(520px, 100%);
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      border:1px solid rgba(2,6,23,.06);
+    }
+    .top{
+      padding:18px 18px 16px;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color:white;
+      position:relative;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.28);
+      backdrop-filter: blur(8px);
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .title{
+      margin:12px 0 6px;
+      font-size:22px;
+      line-height:1.15;
+      font-weight:800;
+    }
+    .subtitle{
+      margin:0;
+      opacity:.92;
+      font-size:13px;
+      line-height:1.35;
+    }
+    .content{ padding:16px 18px 18px; }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; }
+    .field{ width:100%; }
+    label{
+      display:block;
+      margin:12px 0 8px;
+      font-size:13px;
+      color:var(--muted);
+      font-weight:700;
+    }
+    input{
+      width:100%;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(2,6,23,.12);
+      font-size:18px;
+      outline:none;
+      box-shadow: 0 0 0 0 var(--ring);
+      transition: box-shadow .15s, border-color .15s;
+      background: rgba(248,250,252,.9);
+    }
+    input:focus{
+      border-color: rgba(14,165,233,.45);
+      box-shadow: 0 0 0 6px var(--ring);
+      background:white;
+    }
+
+    .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .chip{
+      flex:1 1 140px;
+      border-radius:16px;
+      padding:12px 12px;
+      border:1px solid rgba(2,6,23,.08);
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+    }
+    .chip .k{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .chip .v{
+      margin-top:6px;
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .result{
+      margin-top:14px;
+      border-radius:16px;
+      padding:14px;
+      border:1px dashed rgba(2,6,23,.18);
+      background: rgba(14,165,233,.06);
+    }
+    .result .headline{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      font-size:15px;
+    }
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .tile{
+      border-radius:16px;
+      padding:12px 12px;
+      background:white;
+      border:1px solid rgba(2,6,23,.08);
+    }
+    .tile .k{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .tile .v{
+      margin-top:6px;
+      font-size:22px;
+      font-weight:950;
+    }
+
+    .hint{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .warn{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(245, 158, 11, .12);
+      border:1px solid rgba(245, 158, 11, .28);
+      color:#92400e;
+      font-weight:700;
+      display:none;
+    }
+    .footer{
+      padding:12px 18px 16px;
+      border-top:1px solid rgba(2,6,23,.06);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .mono{ font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="top">
+      <div class="badge">⚡ OPEL</div>
+      <div class="title">Nabíjení do 80 %</div>
+      <p class="subtitle">
+        Start se vždy posune na další <b>:00</b> nebo <b>:30</b> (např. 16:30 → 17:00).<br>
+        Doba se zaokrouhlí nahoru na půlhodiny, aby to raději dobilo víc.
+      </p>
+    </div>
+
+    <div class="content">
+      <label for="percent">Aktuální stav baterie (%)</label>
+      <input id="percent" type="number" inputmode="numeric" min="0" max="100" placeholder="např. 35">
+
+      <div class="warn" id="warn"></div>
+
+      <div class="chips">
+        <div class="chip">
+          <div class="k">Baterie</div>
+          <div class="v"><span class="mono">54</span> kWh</div>
+        </div>
+        <div class="chip">
+          <div class="k">Výkon</div>
+          <div class="v"><span class="mono">11</span> kW</div>
+        </div>
+        <div class="chip">
+          <div class="k">Cíl</div>
+          <div class="v"><span class="mono">80</span> %</div>
+        </div>
+      </div>
+
+      <div class="result" id="resultBox" style="display:none;">
+        <div class="headline">⏱️ Nastav do Tesla Wallboxu</div>
+
+        <div class="grid">
+          <div class="tile">
+            <div class="k">Od</div>
+            <div class="v mono" id="from">--:--</div>
+          </div>
+          <div class="tile">
+            <div class="k">Do</div>
+            <div class="v mono" id="to">--:--</div>
+          </div>
+        </div>
+
+        <div class="hint">
+          Doba nabíjení: <b class="mono" id="duration">--</b> (zaokrouhleno nahoru na 30 min)
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Tip: přidej na plochu (Safari → Sdílet → Přidat na plochu)</div>
+      <div class="mono" id="now">--:--</div>
+    </div>
+  </div>
+
+<script>
+  const BATTERY_KWH = 54;
+  const POWER_KW = 11;
+  const TARGET = 80;
+
+  const elPercent = document.getElementById('percent');
+  const elWarn = document.getElementById('warn');
+  const elNow = document.getElementById('now');
+
+  const elResultBox = document.getElementById('resultBox');
+  const elFrom = document.getElementById('from');
+  const elTo = document.getElementById('to');
+  const elDuration = document.getElementById('duration');
+
+  // Restore last value
+  const saved = localStorage.getItem('opel_percent');
+  if (saved !== null) elPercent.value = saved;
+
+  function formatTime(d){
+    return d.toLocaleTimeString('cs-CZ', { hour:'2-digit', minute:'2-digit' });
+  }
+
+  // "next slot" rules:
+  // 13:25 -> 13:30
+  // 15:01 -> 15:30
+  // 16:30 -> 17:00
+  function nextHalfHourSlot(date){
+    const d = new Date(date);
+    const m = d.getMinutes();
+
+    if (m < 30) {
+      d.setMinutes(30, 0, 0);
+    } else {
+      d.setHours(d.getHours() + 1, 0, 0, 0);
+    }
+    return d;
+  }
+
+  function roundUpTo30(minutes){
+    return Math.ceil(minutes / 30) * 30;
+  }
+
+  function tickClock(){
+    elNow.textContent = 'Teď: ' + formatTime(new Date());
+  }
+
+  function setWarn(msg){
+    if (!msg){
+      elWarn.style.display = 'none';
+      elWarn.textContent = '';
+      return;
+    }
+    elWarn.style.display = 'block';
+    elWarn.textContent = msg;
+  }
+
+  function calc(){
+    const p = Number(elPercent.value);
+    if (!isNaN(p)) localStorage.setItem('opel_percent', String(p));
+
+    setWarn('');
+    elResultBox.style.display = 'none';
+
+    if (elPercent.value.trim() === '') return;
+
+    if (isNaN(p) || p < 0 || p > 100){
+      setWarn('Zadej prosím procenta mezi 0–100.');
+      return;
+    }
+
+    if (p >= TARGET){
+      setWarn(`Jsi na ${p} %. Cíl je ${TARGET} % – není potřeba nabíjet.`);
+      return;
+    }
+
+    const neededKwh = BATTERY_KWH * ((TARGET - p) / 100);
+    const rawMinutes = (neededKwh / POWER_KW) * 60;
+    const minutes = roundUpTo30(rawMinutes);
+
+    const start = nextHalfHourSlot(new Date());
+    const end = new Date(start.getTime() + minutes * 60000);
+
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+
+    elFrom.textContent = formatTime(start);
+    elTo.textContent = formatTime(end);
+    elDuration.textContent = `${h} h ${m} min`;
+
+    elResultBox.style.display = 'block';
+  }
+
+  elPercent.addEventListener('input', calc);
+
+  // live clock
+  tickClock();
+  setInterval(tickClock, 1000 * 10); // update every 10s
+
+  // initial calc if value present
+  calc();
+</script>
+</body>
+</html>
